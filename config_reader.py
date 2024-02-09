@@ -7,6 +7,11 @@ class Settings(BaseSettings):
     # для конфиденциальных данных, например, токена бота
     bot_token: SecretStr
 
+    rabbitmq_host: str
+    rabbitmq_port: str
+    rabbitmq_username: str
+    rabbitmq_password: str
+
     # Начиная со второй версии pydantic, настройки класса настроек задаются
     # через model_config
     # В данном случае будет использоваться файла .env, который будет прочитан
