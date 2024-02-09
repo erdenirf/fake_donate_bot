@@ -18,4 +18,4 @@ channel.basic_consume(
 )
 
 print('Waiting for messages. To exit, press Ctrl+C')
-channel.start_consuming()
+channel.start_consuming() 
