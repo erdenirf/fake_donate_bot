@@ -27,6 +27,6 @@ class Broker:
             print(e)
 
     #Деструктор
-    def __del__(self):
-        # Закрытие соединения
-        self.connection.close()
+    # def __del__(self):
+    #     # Закрытие соединения
+    #     self.connection.close()
