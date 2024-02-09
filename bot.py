@@ -5,8 +5,10 @@ from config_reader import config
 from aiogram import F
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters.command import Command
-from aiogram.utils.formatting import Text, Bold
+from aiogram.utils.formatting import Text, Bold, Italic
 import win32com.client
+import datetime
+import pytz
 
 # Включаем логирование, чтобы не пропустить важные сообщения
 logging.basicConfig(level=logging.INFO)
@@ -38,10 +40,14 @@ async def cmd_start(message: types.Message):
 def SpeakingTextWindows(text):
     speaker.Speak(text)
 
+def get_datetime_msk():
+    return datetime.datetime.now(pytz.timezone('Europe/Moscow')).strftime("%Y-%m-%d %H:%M:%S (МСК)")
+
 # Хэндлер на текст
 @dp.message(F.text)
 async def text_messages(message: types.Message, bot: Bot):
-    content = Text(Bold(message.from_user.full_name), ": ", message.text)
+    content = Text(Italic(get_datetime_msk()), "\n",
+        Bold(message.from_user.full_name), ": ", message.text)
     await bot.send_message(config.user_chat_id, **content.as_kwargs())
     SpeakingTextWindows(message.text)
     #await send_to_queue(message.text)
@@ -49,8 +55,7 @@ async def text_messages(message: types.Message, bot: Bot):
 # Запуск процесса поллинга новых апдейтов
 async def main():
     # Запускаем бота и пропускаем все накопленные входящие
-    # Да, этот метод можно вызвать даже если у вас поллинг
-    await bot.delete_webhook(drop_pending_updates=True)
+    # await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
