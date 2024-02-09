@@ -6,6 +6,7 @@ from aiogram import F
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters.command import Command
 from aiogram.utils.formatting import Text, Bold
+import win32com.client
 
 # Включаем логирование, чтобы не пропустить важные сообщения
 logging.basicConfig(level=logging.INFO)
@@ -16,6 +17,8 @@ dp = Dispatcher()
 # Очередь сообщений
 # broker = Broker()
 # channel = broker.channel
+speaker = win32com.client.Dispatch("SAPI.SpVoice")
+speaker.Voice = speaker.GetVoices().Item(8)
 
 # async def send_to_queue(message):
 #     # Создание очереди (если не существует)
@@ -32,11 +35,15 @@ dp = Dispatcher()
 async def cmd_start(message: types.Message):
     await message.answer("Hello!")
 
+def SpeakingTextWindows(text):
+    speaker.Speak(text)
+
 # Хэндлер на текст
 @dp.message(F.text)
 async def text_messages(message: types.Message, bot: Bot):
     content = Text(Bold(message.from_user.full_name), ": ", message.text)
     await bot.send_message(config.user_chat_id, **content.as_kwargs())
+    SpeakingTextWindows(message.text)
     #await send_to_queue(message.text)
 
 # Запуск процесса поллинга новых апдейтов
