@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     rabbitmq_port: str
     rabbitmq_username: str
     rabbitmq_password: str
+    rabbitmq_topicname: str
 
     user_chat_id: str
 
