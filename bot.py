@@ -1,7 +1,7 @@
 import asyncio
 import logging
 from config_reader import config
-from broker_rabbitmq import Broker
+#from broker_rabbitmq import Broker
 from aiogram import F
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters.command import Command
@@ -14,18 +14,18 @@ bot = Bot(token=config.bot_token.get_secret_value())
 # Диспетчер
 dp = Dispatcher()
 # Очередь сообщений
-broker = Broker()
-channel = broker.channel
+# broker = Broker()
+# channel = broker.channel
 
-async def send_to_queue(message):
-    # Создание очереди (если не существует)
-    channel.queue_declare(queue=config.rabbitmq_topicname)
-    # Отправка сообщения
-    channel.basic_publish(
-        exchange='',
-        routing_key=config.rabbitmq_topicname,
-        body=message
-    )
+# async def send_to_queue(message):
+#     # Создание очереди (если не существует)
+#     channel.queue_declare(queue=config.rabbitmq_topicname)
+#     # Отправка сообщения
+#     channel.basic_publish(
+#         exchange='',
+#         routing_key=config.rabbitmq_topicname,
+#         body=message
+#     )
 
 # Хэндлер на команду /start
 @dp.message(Command("start"))
@@ -37,7 +37,7 @@ async def cmd_start(message: types.Message):
 async def text_messages(message: types.Message, bot: Bot):
     content = Text(Bold(message.from_user.full_name), ": ", message.text)
     await bot.send_message(config.user_chat_id, **content.as_kwargs())
-    await send_to_queue(message.text)
+    #await send_to_queue(message.text)
 
 # Запуск процесса поллинга новых апдейтов
 async def main():
