@@ -12,6 +12,8 @@ class Settings(BaseSettings):
     rabbitmq_username: str
     rabbitmq_password: str
 
+    user_chat_id: str
+
     # Начиная со второй версии pydantic, настройки класса настроек задаются
     # через model_config
     # В данном случае будет использоваться файла .env, который будет прочитан
